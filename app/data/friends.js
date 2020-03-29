@@ -14,6 +14,7 @@ var friendArray = [
       4,
       1
     ]
-  
   }
-]
+];
+
+module.exports = friendArray;
