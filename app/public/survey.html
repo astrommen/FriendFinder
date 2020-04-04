@@ -52,7 +52,7 @@
                     <strong>Question 1</strong>
                   </h3>
                   <h4>I consider other people’s feelings.</h4>
-                  <select name="choice" id="q1">
+                  <select name="choice" class="choice"id="q1">
                     <option value ="1">1 Strongly Disagree</option>
                     <option value ="2">2</option>
                     <option value ="3">3</option>
@@ -184,18 +184,9 @@
 <!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
 <script type="text/javascript">
 
-  // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
-  // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
-  // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
-
-  
-  // displayRadioValue();
-  // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
   $(".submit").on("click", function (event) {
     event.preventDefault();
-    
-  
-    //     var ele = $(".choice").attr(); 
+
         var scoreArray = [];
           
         for(i = 1; i < 3; i++) { 
@@ -203,34 +194,32 @@
             scoreArray.push($("#q"+ i).val()); 
         } 
         console.log("This is scoreArray " + scoreArray);
-  
-
 
     // Here we grab the form elements
     var newFriend = {
       name: $("#name").val().trim(),
       photo: $("#pic").val().trim(),
-      scores: scoreArray
-      
+      scores: scoreArray    
     };
+
     console.log("This is newFriend " + newFriend);
-    // This line is the magic. It"s very similar to the standard ajax function we used.
-    // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
-    // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
-    // depending on if a tables is available or not.
+   
+    // post call to server and apiRoutes
     $.post("/api/friends", newFriend,
-      function (data) {
+      function (results) {
+
+        console.log("now in .post line 210");
+        console.log("This is new friend scores" + newFriend.scores);
         // If a table is available... tell user they are booked.
-        if (data) {
+        if (results) {
           alert("Yay! Survey was entered!");
         }
       
         // Clear the form when submitting
         $("#name").val("");
         $("#pic").val("");
+        $("<select>").val("1");
 
-        // $("#reserve-email").val("");
-        // $("#reserve-unique-id").val("");
       });
   });
 </script>
